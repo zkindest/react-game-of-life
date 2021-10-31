@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "yarn run build && touch build/.nojekyll && gh-pages --dotfiles=true --dist build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   }
 }
