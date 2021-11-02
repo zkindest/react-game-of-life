@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface ControlProps {
   handlePlay: () => void;
   handleGPS: (...args: any) => void;
@@ -26,7 +24,7 @@ const Controls = ({
         <span>Generations:</span>
         <span className="generations" id="gen-count">{genCount}</span>
       </div>
-      <button onClick={handlePlay} className="button" title="toggle play/pause">{isPlaying ? (isAuto ? '⏸' : '⏭') : '▶'}</button>
+      <button onClick={handlePlay} className="button" title="toggle play/pause">{isPlaying ? '⏸' : (isAuto ? '▶' : '⏭')}</button>
       <div className="select" title="control generations per second">
         <label htmlFor="fps">gps:</label>
         <select id="fps" defaultValue="10" onChange={handleGPS}>

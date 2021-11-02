@@ -2,6 +2,7 @@
   "name": "react-game-of-life",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://zkindest.github.io/react-game-of-life",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -20,7 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "yarn run build && touch build/.nojekyll && gh-pages --dotfiles=true --dist build",
+    "deploy": "yarn run build && gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

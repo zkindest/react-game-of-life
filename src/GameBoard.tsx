@@ -15,11 +15,12 @@ function debounce<Params extends any[]>(func: (...args: Params) => any, timeout 
 
 const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col: number, isAlive: boolean, handleClick: (row: number, col: number) => void }) => {
   return (
-    <div
+    <button
       onClick={() => handleClick(row, col)}
       className={`cell ${isAlive ? 'cell-active' : ''}`}
       style={{ height: getCellSize(), width: getCellSize() }}
-    ></div>
+      type="button"
+    ></button>
   )
 })
 
@@ -73,7 +74,7 @@ const areAllCellsDead = (cells: CellState['cells']) => {
   return cells.every((row) => row.every((cell) => !cell));
 }
 const generateNewUniverse = (random = true): CellState['cells'] => {
-  const rows = Math.floor(Math.min(window.innerHeight - 300, 1200) / getCellSize());
+  const rows = Math.floor(Math.min(window.innerHeight - 250, 1200) / getCellSize());
   const columns = Math.floor(Math.min(window.innerWidth, 1200) / getCellSize());
 
   let cells: CellState['cells'] = new Array(rows).fill(null).map(() => new Array(columns).fill(false));
@@ -274,7 +275,7 @@ const GameBoard = () => {
       if (!isPaused()) {
         pause();
       }
-      dispatch({ type: "init" })
+      dispatch({ type: "init", random: true })
     }
     window.addEventListener('resize', debounce(handleResize, 200))
     return () => {
@@ -283,7 +284,7 @@ const GameBoard = () => {
   }, [])
 
   React.useEffect(() => {
-    dispatch({ type: "init" })
+    dispatch({ type: "init", random: true })
   }, [])
 
   return (
@@ -292,13 +293,11 @@ const GameBoard = () => {
         {
           cells.map((row, i) => {
             return (
-              <div className="cell-rows" key={i}>
+              <div className="cells-row" key={i}>
                 {
                   row.map((val, j) => {
                     return (
-                      <div className="cell-row" key={j}>
-                        <Cell row={i} col={j} key={`${i}-${j}`} isAlive={val} handleClick={handleCellClick} />
-                      </div>
+                      <Cell row={i} col={j} key={`${i}-${j}`} isAlive={val} handleClick={handleCellClick} />
                     )
                   })
                 }
