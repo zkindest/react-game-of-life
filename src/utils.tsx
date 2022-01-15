@@ -59,6 +59,39 @@ export const generateNewUniverse = (random = true): GameBoardState['cells'] => {
   }
 }
 
+export const generateNewFrame = (cells: GameBoardState['cells']) => {
+  const next = generateNewUniverse();
+  const totalRows = cells.length;
+  const totalCols = cells[0].length;
+
+  for (let row = 0; row < totalRows; row++) {
+    for (let column = 0; column < totalCols; column++) {
+      const cellState = cells[row][column];
+      let live_neighbours = getAliveNeighboursCount(cells, row, column, totalRows, totalCols);
+
+      //Rule 1: any live cell with fewer than two live neighbours dies, as if caused by underpopulation
+      if (cellState === true && live_neighbours < 2) {
+        next[row][column] = false;
+      }
+      //Rule 2 : Any live cell with two or three live neighbours lives on to the next generation
+      else if (cellState === true && live_neighbours <= 3) {
+        next[row][column] = true;
+      }
+      //Rule 3: Any live cell with more than three live neighbours dies,as if by overpopulation
+      else if (cellState === true && live_neighbours > 3) {
+        next[row][column] = false;
+      }
+      //Rule 4: Any dead cell with exactly three live neighbours becomes a live cell,as if by reproduction
+      else if (cellState === false && live_neighbours === 3) {
+        next[row][column] = true;
+      }
+      else {
+        next[row][column] = cellState;
+      }
+    }
+  }
+  return next;
+}
 export function debounce<Params extends any[]>(func: (...args: Params) => any, timeout = 300) {
   let timer: NodeJS.Timeout;
   return (...args: Params) => {
