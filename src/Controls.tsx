@@ -1,45 +1,40 @@
 import { ChangeEvent, Dispatch } from "react";
-import { ControlsAction, GameBoardAction } from "./types";
+import { GameBoardAction } from "./types";
 
 interface ControlProps {
   genCount: number;
   generationsPerSecond: number;
   isPlaying: boolean;
   isAuto: boolean;
-  controlsDispatch: Dispatch<ControlsAction>
-  gameBoardDispatch: Dispatch<GameBoardAction>
+  dispatch: Dispatch<GameBoardAction>
 }
 const Controls = ({
   genCount,
   isPlaying,
   isAuto,
   generationsPerSecond,
-  controlsDispatch,
-  gameBoardDispatch
+  dispatch
 }: ControlProps) => {
 
   const handleGPSChange = (e: ChangeEvent<HTMLSelectElement>) => {
     // handles regeneration interval change
-    controlsDispatch({ type: 'gps-change', payload: Number(e.target.value) })
+    dispatch({ type: 'gps-change', payload: Number(e.target.value) })
   };
 
   const handleAutoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // controlsDispatch({ type: 'set-play', payload: false });
-    controlsDispatch({ type: 'auto-option-change', payload: e.target.checked })
+    dispatch({ type: 'auto-option-change', payload: e.target.checked })
   }
   const handleStep = () => {
-    controlsDispatch({ type: "step-next" });
+    dispatch({ type: "step-next" });
   }
   const handleReset = () => {
-    controlsDispatch({ type: 'set-play', payload: false });
-    gameBoardDispatch({ type: 'init', payload: { random: false } })
+    dispatch({ type: 'reset' });
   }
   const handleRandomGeneration = () => {
-    controlsDispatch({ type: 'set-play', payload: false });
-    gameBoardDispatch({ type: 'init', payload: { random: true } })
+    dispatch({ type: 'stop-and-set-random' });
   }
   const handlePlay = () => {
-    controlsDispatch({ type: "toggle-play" })
+    dispatch({ type: "toggle-play" });
   }
   return (
     <div className="controls">

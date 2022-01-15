@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import Controls from './Controls';
-import { ControlsAction, ControlsState, GameBoardAction, GameBoardState } from './types';
-import { areAllCellsDead, debounce, generateNewUniverse, getAliveNeighboursCount, getCellSize } from './utils';
+import { GameBoardAction, GameBoardState } from './types';
+import { areAllCellsDead, debounce, generateNewFrame, generateNewUniverse, getCellSize } from './utils';
 
 const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col: number, isAlive: boolean, handleClick: (row: number, col: number) => void }) => {
   return (
@@ -17,7 +17,7 @@ const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col:
 const gameBoardreducer = (state: GameBoardState, action: GameBoardAction): GameBoardState => {
   switch (action.type) {
     case "init": {
-      return { cells: generateNewUniverse(action.payload.random), genCount: 0 }
+      return { ...state, cells: generateNewUniverse(action.payload.random), genCount: 0 }
     }
     case "toggle_cell": {
       const cells = state.cells;
@@ -35,48 +35,11 @@ const gameBoardreducer = (state: GameBoardState, action: GameBoardAction): GameB
       return { ...state, cells: updatedCells }
     }
     case "generate_next_frame": {
-      const next = generateNewUniverse();
-      const { cells, genCount } = state;
-      const totalRows = cells.length;
-      const totalCols = cells[0].length;
-
-      for (let row = 0; row < totalRows; row++) {
-        for (let column = 0; column < totalCols; column++) {
-          const cellState = cells[row][column];
-          let live_neighbours = getAliveNeighboursCount(cells, row, column, totalRows, totalCols);
-
-          //Rule 1: any live cell with fewer than two live neighbours dies, as if caused by underpopulation
-          if (cellState === true && live_neighbours < 2) {
-            next[row][column] = false;
-          }
-          //Rule 2 : Any live cell with two or three live neighbours lives on to the next generation
-          else if (cellState === true && live_neighbours <= 3) {
-            next[row][column] = true;
-          }
-          //Rule 3: Any live cell with more than three live neighbours dies,as if by overpopulation
-          else if (cellState === true && live_neighbours > 3) {
-            next[row][column] = false;
-          }
-          //Rule 4: Any dead cell with exactly three live neighbours becomes a live cell,as if by reproduction
-          else if (cellState === false && live_neighbours === 3) {
-            next[row][column] = true;
-          }
-          else {
-            next[row][column] = cellState;
-          }
-        }
-      }
       return {
-        cells: next, genCount: genCount + 1
+        ...state,
+        cells: generateNewFrame(state.cells), genCount: state.genCount + 1
       }
     }
-    default:
-      return state;
-  }
-}
-
-const controlsReducer = (state: ControlsState, action: ControlsAction) => {
-  switch (action.type) {
     case 'set-play':
       return { ...state, isPlaying: action.payload }
     case 'toggle-play':
@@ -88,24 +51,24 @@ const controlsReducer = (state: ControlsState, action: ControlsAction) => {
     case 'step-next':
       return { ...state, stepNext: !state.stepNext }
     case 'reset':
-      return { ...state, isPlaying: false, reset: !state.reset }
+      return { ...state, isPlaying: false, cells: generateNewUniverse(false), genCount: 0 }
+    case 'stop-and-set-random':
+      return {
+        ...state, isPlaying: false, cells: generateNewUniverse(true)
+      }
     default:
-      return state
+      return state;
   }
 }
-
 const GameBoard = () => {
 
-  const [{ cells, genCount }, gameBoardDispatch] = useReducer(gameBoardreducer, {
+  const [{ cells, genCount, isPlaying, generationsPerSecond, autoPlay, stepNext }, dispatch] = useReducer(gameBoardreducer, {
     cells: [],
-    genCount: 0
-  })
-  const [{ isPlaying, generationsPerSecond, autoPlay, stepNext }, controlsDispatch] = useReducer(controlsReducer, {
+    genCount: 0,
     isPlaying: false,
     generationsPerSecond: 10,
     autoPlay: true,
-    stepNext: false,
-    reset: false
+    stepNext: false
   })
 
   const animationIdRef = useRef<number | undefined>();
@@ -125,18 +88,18 @@ const GameBoard = () => {
       // specified gpsInterval not being a multiple of RAF's interval (16.7ms)
       then = now - (elapsed % gpsInterval!);
 
-      gameBoardDispatch({ type: "generate_next_frame" })
+      dispatch({ type: "generate_next_frame" })
     }
   }
 
   const handleCellClick = useCallback((row: number, col: number) => {
-    gameBoardDispatch({ type: "toggle_cell", payload: { row, col } })
+    dispatch({ type: "toggle_cell", payload: { row, col } })
   }, []);
 
   const play = () => {
     if (areAllCellsDead(cells)) {
       pause();
-      controlsDispatch({ type: 'set-play', payload: false });
+      dispatch({ type: 'set-play', payload: false });
       alert('There is no life in current universe! click on 🔀 to generate random life!!');
       return;
     }
@@ -167,7 +130,7 @@ const GameBoard = () => {
         alert('There is no life in current universe! click on 🔀 to generate random life!!');
         return;
       }
-      gameBoardDispatch({ type: "generate_next_frame" });
+      dispatch({ type: "generate_next_frame" });
     }
   }, [stepNext])
 
@@ -184,13 +147,13 @@ const GameBoard = () => {
       if (isPlaying) {
         pause();
       }
-      gameBoardDispatch({ type: "init", payload: { random: true } })
+      dispatch({ type: "init", payload: { random: true } })
     }
 
     window.addEventListener('resize', debounce(handleResize, 200))
 
     // load initial board
-    gameBoardDispatch({ type: "init", payload: { random: true } })
+    dispatch({ type: "init", payload: { random: true } })
 
     return () => {
       window.addEventListener('resize', handleResize)
@@ -217,8 +180,7 @@ const GameBoard = () => {
         }
       </div>
       <Controls
-        controlsDispatch={controlsDispatch}
-        gameBoardDispatch={gameBoardDispatch}
+        dispatch={dispatch}
         generationsPerSecond={generationsPerSecond}
         isAuto={autoPlay}
         isPlaying={isPlaying}
