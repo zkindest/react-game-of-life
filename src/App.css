@@ -63,15 +63,16 @@
   margin: 1rem 0;
   user-select: none;
   flex-flow: row wrap;
+  gap: 1rem;
 }
 
 .controls>*+* {
   margin-left: .5rem;
 }
 
-.controls>* {
+/* .controls>* {
   margin: .3rem;
-}
+} */
 
 select {
   width: 5rem;

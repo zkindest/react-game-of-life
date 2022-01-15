@@ -1,17 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import Controls from './Controls';
-
-const getCellSize = () =>
-  typeof window !== "undefined" && window.innerWidth >= 500 ? 24 : 40;
-
-
-function debounce<Params extends any[]>(func: (...args: Params) => any, timeout = 300) {
-  let timer: NodeJS.Timeout;
-  return (...args: Params) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func(...args) }, timeout);
-  };
-}
+import { ControlsAction, ControlsState, GameBoardAction, GameBoardState } from './types';
+import { areAllCellsDead, debounce, generateNewUniverse, getAliveNeighboursCount, getCellSize } from './utils';
 
 const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col: number, isAlive: boolean, handleClick: (row: number, col: number) => void }) => {
   return (
@@ -24,91 +14,23 @@ const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col:
   )
 })
 
-type CellState = {
-  cells: boolean[][],
-  genCount: number
-}
-
-type Action = | {
-  type: "init";
-  random?: boolean
-} | {
-  type: "toggle_cell";
-  row: number;
-  col: number;
-} | {
-  type: 'generate_next_frame';
-};
-
-const getAliveNeighboursCount = (cells: CellState['cells'], row: number, column: number, totalRows: number, totalCols: number) => {
-  let count = 0;
-
-  let north = row === 0 ? totalRows - 1 : row - 1;
-
-  let south = row === totalRows - 1 ? 0 : row + 1;
-
-  let west = column === 0 ? totalCols - 1 : column - 1;
-
-  let east = column === totalCols - 1 ? 0 : column + 1;
-
-  count += Number(cells[north][west]);
-
-  count += Number(cells[north][column]);
-
-  count += Number(cells[north][east]);
-
-  count += Number(cells[row][west]);
-
-  count += Number(cells[row][east]);
-
-  count += Number(cells[south][west]);
-
-  count += Number(cells[south][column]);
-
-  count += Number(cells[south][east]);
-
-  return count;
-}
-
-const areAllCellsDead = (cells: CellState['cells']) => {
-  return cells.every((row) => row.every((cell) => !cell));
-}
-const generateNewUniverse = (random = true): CellState['cells'] => {
-  const rows = Math.floor(Math.min(window.innerHeight - 250, 1200) / getCellSize());
-  const columns = Math.floor(Math.min(window.innerWidth, 1200) / getCellSize());
-
-  let cells: CellState['cells'] = new Array(rows).fill(null).map(() => new Array(columns).fill(false));
-
-  if (random) {
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < columns; col++) {
-
-        cells[row][col] = Math.random() < 0.7 ? false : true;
-      }
-    }
-    return cells;
-  } else {
-    return cells
-  }
-}
-
-const reducer = (state: CellState, action: Action): CellState => {
+const gameBoardreducer = (state: GameBoardState, action: GameBoardAction): GameBoardState => {
   switch (action.type) {
     case "init": {
-      return { cells: generateNewUniverse(action.random), genCount: 0 }
+      return { cells: generateNewUniverse(action.payload.random), genCount: 0 }
     }
     case "toggle_cell": {
       const cells = state.cells;
-      const newCellState = !cells[action.row][action.col]
+      const newCellState = !cells[action.payload.row][action.payload.col]
 
       const updatedCells = [
-        ...cells.slice(0, action.row),
+        ...cells.slice(0, action.payload.row),
         [
-          ...cells[action.row].slice(0, action.col),
+          ...cells[action.payload.row].slice(0, action.payload.col),
           newCellState,
-          ...cells[action.row].slice(action.col + 1)
+          ...cells[action.payload.row].slice(action.payload.col + 1)
         ],
-        ...cells.slice(action.row + 1)
+        ...cells.slice(action.payload.row + 1)
       ]
       return { ...state, cells: updatedCells }
     }
@@ -153,19 +75,42 @@ const reducer = (state: CellState, action: Action): CellState => {
   }
 }
 
+const controlsReducer = (state: ControlsState, action: ControlsAction) => {
+  switch (action.type) {
+    case 'set-play':
+      return { ...state, isPlaying: action.payload }
+    case 'toggle-play':
+      return { ...state, isPlaying: !state.isPlaying }
+    case 'auto-option-change':
+      return { ...state, autoPlay: action.payload, isPlaying: false }
+    case 'gps-change':
+      return { ...state, generationsPerSecond: action.payload }
+    case 'step-next':
+      return { ...state, stepNext: !state.stepNext }
+    case 'reset':
+      return { ...state, isPlaying: false, reset: !state.reset }
+    default:
+      return state
+  }
+}
+
 const GameBoard = () => {
 
-  const [{ cells, genCount }, dispatch] = React.useReducer(reducer, {
+  const [{ cells, genCount }, gameBoardDispatch] = useReducer(gameBoardreducer, {
     cells: [],
     genCount: 0
   })
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [fps, setFps] = React.useState(10);
-  const [auto, setAuto] = React.useState(true);
+  const [{ isPlaying, generationsPerSecond, autoPlay, stepNext }, controlsDispatch] = useReducer(controlsReducer, {
+    isPlaying: false,
+    generationsPerSecond: 10,
+    autoPlay: true,
+    stepNext: false,
+    reset: false
+  })
 
-  const animationIdRef = React.useRef<number | undefined>();
+  const animationIdRef = useRef<number | undefined>();
 
-  let now: number, then: number, elapsed: number, fpsInterval: number;
+  let now: number, then: number, elapsed: number, gpsInterval: number;
 
   const renderLoop = () => {
     animationIdRef.current = requestAnimationFrame(renderLoop);
@@ -175,116 +120,81 @@ const GameBoard = () => {
     elapsed = now - then;
 
     // if enough time has elapsed, draw the next frame
-    if (elapsed > fpsInterval) {
+    if (elapsed > gpsInterval) {
       // Get ready for next frame by setting then=now, but also adjust for your
-      // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
-      then = now - (elapsed % fpsInterval!);
+      // specified gpsInterval not being a multiple of RAF's interval (16.7ms)
+      then = now - (elapsed % gpsInterval!);
 
-      dispatch({ type: "generate_next_frame" })
+      gameBoardDispatch({ type: "generate_next_frame" })
     }
   }
 
-  const handleCellClick = React.useCallback((row: number, col: number) => {
-    dispatch({ type: "toggle_cell", row, col })
+  const handleCellClick = useCallback((row: number, col: number) => {
+    gameBoardDispatch({ type: "toggle_cell", payload: { row, col } })
   }, []);
 
   const play = () => {
     if (areAllCellsDead(cells)) {
+      pause();
+      controlsDispatch({ type: 'set-play', payload: false });
       alert('There is no life in current universe! click on 🔀 to generate random life!!');
       return;
     }
-
-    setIsPlaying(true);
-
-    fpsInterval = 1000 / fps;
+    // if we want 10 generation per 1000ms(1 sec), how much time should one generation should take?
+    gpsInterval = 1000 / generationsPerSecond;
     then = Date.now();
     renderLoop();
   }
 
   const pause = () => {
-    setIsPlaying(false);
-
     if (animationIdRef.current) {
       cancelAnimationFrame(animationIdRef.current);
       animationIdRef.current = undefined;
     }
   }
 
-  const isPaused = () => {
-    return !animationIdRef.current;
-  };
-
-
-  const handlePlay = () => {
-    if (areAllCellsDead(cells)) {
-      pause();
-      alert('There is no life in current universe! click on 🔀 to generate random life!!');
-      return;
-    }
-    if (!auto) {
-      dispatch({ type: "generate_next_frame" })
-      return;
-    }
-    if (isPaused()) {
+  useEffect(() => {
+    if (isPlaying && autoPlay) {
       play();
     } else {
       pause();
     }
-  }
+  }, [isPlaying]);
 
-  const handleGPSChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    // handles regeneration interval change
-    const newFPS = Number(e.target.value);
-    setFps(newFPS)
+  useEffect(() => {
+    if (!autoPlay) {
+      if (areAllCellsDead(cells)) {
+        alert('There is no life in current universe! click on 🔀 to generate random life!!');
+        return;
+      }
+      gameBoardDispatch({ type: "generate_next_frame" });
+    }
+  }, [stepNext])
 
-    if (!isPaused()) {
+  useEffect(() => {
+    if (isPlaying) {
       pause();
       play();
     }
-  }
-  const handleAutoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isAuto = e.target.checked;
-    setAuto(isAuto)
-    if (!isAuto) {
-      pause();
-    }
-  }
+  }, [generationsPerSecond])
 
-  const handleReset = () => {
-    if (!isPaused()) {
-      pause();
-    }
 
-    if (areAllCellsDead(cells)) {
-      alert('There is no life in current universe! click on 🔀 to generate random life!!');
-      return;
-    }
-
-    dispatch({ type: "init", random: false })
-  }
-  const handleRandomGeneration = () => {
-    if (!isPaused()) {
-      pause();
-    }
-    dispatch({ type: "init" })
-  }
-
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
-
-      if (!isPaused()) {
+      if (isPlaying) {
         pause();
       }
-      dispatch({ type: "init", random: true })
+      gameBoardDispatch({ type: "init", payload: { random: true } })
     }
+
     window.addEventListener('resize', debounce(handleResize, 200))
+
+    // load initial board
+    gameBoardDispatch({ type: "init", payload: { random: true } })
+
     return () => {
       window.addEventListener('resize', handleResize)
     }
-  }, [])
-
-  React.useEffect(() => {
-    dispatch({ type: "init", random: true })
   }, [])
 
   return (
@@ -307,12 +217,10 @@ const GameBoard = () => {
         }
       </div>
       <Controls
-        handlePlay={handlePlay}
-        handleGPS={handleGPSChange}
-        handleAuto={handleAutoChange}
-        handleRandom={handleRandomGeneration}
-        handleReset={handleReset}
-        isAuto={auto}
+        controlsDispatch={controlsDispatch}
+        gameBoardDispatch={gameBoardDispatch}
+        generationsPerSecond={generationsPerSecond}
+        isAuto={autoPlay}
         isPlaying={isPlaying}
         genCount={genCount}
       />
