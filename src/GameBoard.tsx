@@ -6,6 +6,7 @@ import { areAllCellsDead, debounce, generateNewFrame, generateNewUniverse, getCe
 const Cell = React.memo(({ row, col, isAlive, handleClick }: { row: number, col: number, isAlive: boolean, handleClick: (row: number, col: number) => void }) => {
   return (
     <button
+      tabIndex={-1}
       onClick={() => handleClick(row, col)}
       className={`cell ${isAlive ? 'cell-active' : ''}`}
       style={{ height: getCellSize(), width: getCellSize() }}
@@ -162,7 +163,7 @@ const GameBoard = () => {
 
   return (
     <div className="board-container">
-      <div className="cells-container">
+      <div className="cells-container" >
         {
           cells.map((row, i) => {
             return (
