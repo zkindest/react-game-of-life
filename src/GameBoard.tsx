@@ -101,7 +101,7 @@ const GameBoard = () => {
     if (areAllCellsDead(cells)) {
       pause();
       dispatch({ type: 'set-play', payload: false });
-      alert('There is no life in current universe! click on 🔀 to generate random life!!');
+      alert('There is no life in current universe! click on "random" button or click on the cells to generate random life!!');
       return;
     }
     // if we want 10 generation per 1000ms(1 sec), how much time should one generation should take?
@@ -128,7 +128,7 @@ const GameBoard = () => {
   useEffect(() => {
     if (!autoPlay) {
       if (areAllCellsDead(cells)) {
-        alert('There is no life in current universe! click on 🔀 to generate random life!!');
+        alert('There is no life in current universe! click on "random" button  or click on the cells to generate random life!!');
         return;
       }
       dispatch({ type: "generate_next_frame" });
