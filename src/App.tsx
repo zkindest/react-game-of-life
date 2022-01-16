@@ -1,23 +1,29 @@
+import { useState } from 'react';
 import './App.css';
+import Button from './components/Button';
+import { Help } from './components/Icons';
+import Modal from './components/Modal';
 import GameBoard from './GameBoard';
+import HelpContent from './HelpContent';
 
 function App() {
+  const [showHelp, setShowHelp] = useState(false);
   return (
     <div className="App">
       <header className="App-header">
         <h1>
           Game of Life
-          <a className="game-help" href="https://en.wikipedia.org/wiki/Conway's_Game_of_Life" target="_blank" rel="noreferrer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-          </a>
-
         </h1>
+        <Button aria-label="game help" onClick={() => setShowHelp((curr) => !curr)}>
+          <Help />
+        </Button>
+        {
+          showHelp && (
+            <Modal onClose={() => setShowHelp(false)}>
+              <HelpContent />
+            </Modal>
+          )
+        }
       </header>
       <div>
         <GameBoard />
