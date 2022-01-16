@@ -1,7 +1,7 @@
 import { GameBoardState } from "./types";
 
 export const getCellSize = () =>
-  typeof window !== "undefined" && window.innerWidth >= 500 ? 24 : 40;
+  typeof window !== "undefined" && window.innerWidth >= 500 ? 26 : 40;
 
 export const getAliveNeighboursCount = (cells: GameBoardState['cells'], row: number, column: number, totalRows: number, totalCols: number) => {
   let count = 0;
