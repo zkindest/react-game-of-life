@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import './App.css';
-import Button from './components/Button';
-import { Help } from './components/Icons';
 import Modal from './components/Modal';
 import GameBoard from './GameBoard';
 import HelpContent from './HelpContent';
@@ -14,9 +12,9 @@ function App() {
         <h1>
           Game of Life
         </h1>
-        <Button aria-label="game help" onClick={() => setShowHelp((curr) => !curr)}>
-          <Help />
-        </Button>
+        <a href="javascript:void(0)" aria-label="game help" onClick={() => setShowHelp((curr) => !curr)} className="help">
+          what is this?
+        </a>
         {
           showHelp && (
             <Modal onClose={() => setShowHelp(false)}>
