@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import Modal from './components/Modal'
+import Modal from './components/modal'
 import GameBoard from './GameBoard'
 import HelpContent from './HelpContent'
 

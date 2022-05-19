@@ -6,23 +6,17 @@ interface SwitchProps extends ComponentPropsWithoutRef<'input'> {
   name: string
   label?: string
   options: string[]
-  currentOption: string
+  value: string
 }
-const Switch = ({
-  name,
-  label,
-  options,
-  currentOption,
-  ...other
-}: SwitchProps) => {
+const Switch = ({ name, label, options, value, ...other }: SwitchProps) => {
   useEffect(() => {
-    if (!options.includes(currentOption)) {
+    if (!options.includes(value)) {
       console.error(
-        `current switch value: ${currentOption} not included in options`
+        `current switch value: ${value} not present in given values.`
       )
       return
     }
-  }, [currentOption])
+  }, [value])
 
   const nameId = generateLabelId(name)
 
@@ -36,14 +30,14 @@ const Switch = ({
             type="radio"
             name={name || 'PleaseChooseName'}
             id={`${nameId}__option1`}
-            checked={currentOption === options[0]}
+            checked={value === options[0]}
             {...other}
           />
           <input
             type="radio"
             name={name || 'PleaseChooseName'}
             id={`${nameId}__option2`}
-            checked={currentOption === options[1]}
+            checked={value === options[1]}
             {...other}
           />
           <span

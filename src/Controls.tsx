@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, useState } from 'react'
-import Button from './components/Button'
+import Button from './components/button'
 import {
   PauseSVG,
   PlaySVG,
@@ -8,10 +8,9 @@ import {
   StepForwardSVG,
 } from './components/Icons'
 import { GameBoardAction } from './types'
-import Switch from './components/Switch'
-import Select from './components/Select'
-
-const gpsOptions = ['1', '5', '10', '15', '20']
+import Switch from './components/switch'
+import Select from './components/select'
+import { gpsOptions } from './config'
 
 interface ControlProps {
   genCount: number
@@ -68,6 +67,7 @@ const Controls = ({
           className="button"
           title="step forward once"
           onClick={handleStep}
+          aria-label="step forward once"
         >
           {<StepForwardSVG />}
         </Button>
@@ -76,6 +76,7 @@ const Controls = ({
         id="reset"
         className="button"
         title="kill all cells and reset generations to zero"
+        aria-label="kill all cells and reset generations to zero"
         onClick={handleReset}
       >
         <Reset />
@@ -84,6 +85,7 @@ const Controls = ({
         id="random"
         className="button"
         title="randomly generate cells"
+        aria-label="randomly generate cells"
         onClick={handleRandomGeneration}
       >
         <Random />
@@ -100,7 +102,7 @@ const Controls = ({
         title="auto generate cells at selected gps"
         options={['auto', 'manual']}
         onChange={handleAutoChange}
-        currentOption={auto ? 'auto' : 'manual'}
+        value={auto ? 'auto' : 'manual'}
       />
     </div>
   )
