@@ -10,7 +10,7 @@ import {
 import { GameBoardAction } from './types'
 import Switch from './components/switch'
 import Select from './components/select'
-import { gpsOptions } from './config'
+import { GPSOptions } from './config'
 
 interface ControlProps {
   genCount: number
@@ -92,7 +92,7 @@ const Controls = ({
       </Button>
       <Select
         label="gps"
-        options={gpsOptions}
+        options={GPSOptions}
         onChange={handleGPSChange}
         value={generationsPerSecond}
         aria-label="control generations per second"

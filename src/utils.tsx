@@ -1,7 +1,16 @@
+import {
+  defaultDebounceInterval,
+  largeScreenCellSize,
+  maxBoardHeight,
+  maxBoardWidth,
+  smallScreenCellSize,
+} from './config'
 import { GameBoardState } from './types'
 
 export const getCellSize = () =>
-  typeof window !== 'undefined' && window.innerWidth >= 500 ? 26 : 40
+  typeof window !== 'undefined' && window.innerWidth >= 500
+    ? largeScreenCellSize
+    : smallScreenCellSize
 
 export const getAliveNeighboursCount = (
   cells: GameBoardState['cells'],
@@ -48,9 +57,11 @@ export const generateNewUniverse = (random = true): GameBoardState['cells'] => {
    * generates cells[][] with all "false" if "random" not specified, otherwise fills it with random boolean values
    */
   const rows = Math.floor(
-    Math.min(window.innerHeight - 250, 1200) / getCellSize()
+    Math.min(window.innerHeight - 250, maxBoardHeight) / getCellSize()
   )
-  const columns = Math.floor(Math.min(window.innerWidth, 1200) / getCellSize())
+  const columns = Math.floor(
+    Math.min(window.innerWidth, maxBoardWidth) / getCellSize()
+  )
 
   let cells: GameBoardState['cells'] = new Array(rows)
     .fill(null)
@@ -108,7 +119,7 @@ export const generateNewFrame = (cells: GameBoardState['cells']) => {
 }
 export function debounce<Params extends any[]>(
   func: (...args: Params) => any,
-  timeout = 300
+  timeout = defaultDebounceInterval
 ) {
   let timer: NodeJS.Timeout
   return (...args: Params) => {

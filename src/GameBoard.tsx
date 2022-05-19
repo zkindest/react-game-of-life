@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
+import { initialGameSettings } from './config'
 import Controls from './Controls'
 import { GameBoardAction, GameBoardState } from './types'
 import {
@@ -98,14 +99,7 @@ const GameBoard = () => {
   const [
     { cells, genCount, isPlaying, generationsPerSecond, autoPlay, stepNext },
     dispatch,
-  ] = useReducer(gameBoardreducer, {
-    cells: [],
-    genCount: 0,
-    isPlaying: false,
-    generationsPerSecond: 10,
-    autoPlay: true,
-    stepNext: false,
-  })
+  ] = useReducer(gameBoardreducer, initialGameSettings)
 
   const animationIdRef = useRef<number | undefined>()
 
