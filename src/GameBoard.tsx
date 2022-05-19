@@ -45,7 +45,7 @@ const gameBoardreducer = (
         genCount: 0,
       }
     }
-    case 'toggle_cell': {
+    case 'toggle-cell': {
       const cells = state.cells
       const newCellState = !cells[action.payload.row][action.payload.col]
 
@@ -60,7 +60,7 @@ const gameBoardreducer = (
       ]
       return { ...state, cells: updatedCells }
     }
-    case 'generate_next_frame': {
+    case 'generate-next-frame': {
       return {
         ...state,
         cells: generateNewFrame(state.cells),
@@ -124,12 +124,12 @@ const GameBoard = () => {
       // specified gpsInterval not being a multiple of RAF's interval (16.7ms)
       then = now - (elapsed % gpsInterval!)
 
-      dispatch({ type: 'generate_next_frame' })
+      dispatch({ type: 'generate-next-frame' })
     }
   }
 
   const handleCellClick = useCallback((row: number, col: number) => {
-    dispatch({ type: 'toggle_cell', payload: { row, col } })
+    dispatch({ type: 'toggle-cell', payload: { row, col } })
   }, [])
 
   const play = () => {
@@ -137,7 +137,7 @@ const GameBoard = () => {
       pause()
       dispatch({ type: 'set-play', payload: false })
       alert(
-        'There is no life in current universe! click on "random" button or click on the cells to generate random life!!'
+        'There is no life in current universe! click on "random" button (dice like dotted button) or click on the cells to generate random life!!'
       )
       return
     }
@@ -166,11 +166,11 @@ const GameBoard = () => {
     if (!autoPlay) {
       if (areAllCellsDead(cells)) {
         alert(
-          'There is no life in current universe! click on "random" button  or click on the cells to generate random life!!'
+          'There is no life in current universe! click on "random" button (dice like dotted button) or click on the cells to generate random life!!'
         )
         return
       }
-      dispatch({ type: 'generate_next_frame' })
+      dispatch({ type: 'generate-next-frame' })
     }
   }, [stepNext])
 

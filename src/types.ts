@@ -14,8 +14,8 @@ export type GameBoardState = {
 
 export type GameBoardAction =
   | Action<'init', { random: boolean }>
-  | Action<'toggle_cell', { row: number; col: number }>
-  | Action<'generate_next_frame'>
+  | Action<'toggle-cell', { row: number; col: number }>
+  | Action<'generate-next-frame'>
   | Action<'auto-option-change', boolean>
   | Action<'toggle-play'>
   | Action<'gps-change', number>
