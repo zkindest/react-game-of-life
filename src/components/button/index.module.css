@@ -11,7 +11,7 @@
   transition: transform 0.2s ease-in;
 }
 .button:hover {
-  border-color: var(--clr-black);
+  border-color: var(--colors-black);
 }
 .button:focus {
   box-shadow: var(--focus1);

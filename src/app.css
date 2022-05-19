@@ -93,22 +93,34 @@ textarea {
   padding: 0;
 }
 :root {
-  --clr-gainsboro: gainsboro;
-  --clr-lightblue: lightblue;
-  --clr-pale-brown: bisque;
-  --clr-lightskyblue: lightskyblue;
-  --clr-lightskyblue-1: rgb(28, 174, 231);
+  --colors-orange6: hsl(25 100% 82.8%);
+
+  /* Sky */
+  --colors-lightblue: lightblue;
+  --colors-lightskyblue: lightskyblue;
+  --colors-sky3: hsl(193 99% 94.7%);
+  --colors-sky4: hsl(193 91.4% 91.4%);
   --colors-sky6: hsl(194 74.1% 79.5%);
+  --colors-sky7: hsl(194 72.3% 69.6%);
+  --colors-sky8: hsl(193 77.9% 53.9%);
+  --colors-sky10: hsl(193 87% 66.5%);
+  --colors-sky11: hsl(195 100% 31.5%);
+  --colors-sky12: hsl(195 100% 13%);
+
+  /* Gray */
+  --colors-gray1: hsl(0 0% 99%);
+  --colors-gray2: hsl(0 0% 97.3%);
+  --colors-gray3: hsl(0 0% 95.1%);
   --colors-gray4: hsl(0 0% 93%);
   --colors-gray8: hsl(0 0% 78%);
-  --clr-white: white;
-  --clr-white-1: #eee;
-  --clr-black: black;
-  --clr-elements: hsl(0, 0%, 100%);
-  --clr-text: hsl(200, 15%, 8%);
-  --clr-pink: hsla(333, 60%, 60%, 1);
-  --clr-dark-pink: hsla(333, 40%, 45%, 1);
-  --clr-backdrop: rgba(0, 0, 0, 0.5);
+
+  --colors-white: white;
+  --colors-black: black;
+
+  --colors-slate12: hsl(206 24% 9%);
+
+  --colors-backdrop: rgba(0, 0, 0, 0.5);
+
   --colors-focus1: rgba(0, 144, 237, 0.4);
 
   --shadow-color: 280deg 6% 76%;
@@ -126,7 +138,7 @@ textarea {
 }
 .app__help {
   align-self: self-end;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
 }
 .app__header {
   display: flex;

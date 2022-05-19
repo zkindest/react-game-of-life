@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   inset: 0;
-  background: var(--clr-backdrop);
+  background: var(--colors-backdrop);
   z-index: 1;
   -webkit-tap-highlight-color: transparent;
   opacity: 0;
@@ -33,8 +33,8 @@
   display: flex;
   flex-direction: column;
   max-width: 1440px;
-  background-color: var(--clr-white);
-  color: var(--clr-black);
+  background-color: var(--colors-white);
+  color: var(--colors-black);
   margin: 2rem;
   padding: 0.5rem 1.5rem;
 }

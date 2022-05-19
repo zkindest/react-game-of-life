@@ -4,7 +4,7 @@
   align-items: center;
 }
 .game-board__inner {
-  border: 1px solid var(--clr-lightblue);
+  border: 1px solid var(--colors-sky6);
 }
 .game-board__row {
   display: flex;
@@ -12,21 +12,21 @@
 }
 
 .cell {
-  background-color: var(--clr-white);
-  border: 1px solid var(--clr-lightblue);
+  background-color: var(--colors-white);
+  border: 1px solid var(--colors-lightblue);
   cursor: pointer;
 }
 .cell:hover {
-  background-color: var(--clr-gainsboro);
+  background-color: var(--colors-orange6);
 }
 .cell:active {
-  background-color: var(--clr-lightskyblue);
+  background-color: var(--colors-lightskyblue);
 }
 .cell.alive {
-  background-color: var(--clr-lightskyblue);
+  background-color: var(--colors-lightskyblue);
 }
 .cell.alive:hover {
-  background-color: var(--clr-lightskyblue-1);
+  background-color: var(--colors-sky11);
 }
 .cells-group {
   display: flex;

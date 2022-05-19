@@ -5,7 +5,7 @@
   align-items: center;
 }
 .form__field label {
-  color: var(--clr-text);
+  color: var(--colors-slate12);
   margin-right: 0.5em;
 }
 .field-select {
@@ -15,8 +15,8 @@
 .field-select select {
   appearance: none;
   border-radius: 4px;
-  color: var(--clr-text);
-  background-color: var(--clr-elements);
+  color: var(--colors-slate12);
+  background-color: var(--colors-gray1);
   min-height: calc(1em + 26px);
   min-width: 100px;
   padding-left: 0.5em;
@@ -24,8 +24,8 @@
   outline: 0;
 }
 .field-select::after {
-  border-bottom: 2px solid var(--clr-text);
-  border-right: 2px solid var(--clr-text);
+  border-bottom: 2px solid var(--colors-slate12);
+  border-right: 2px solid var(--colors-slate12);
   content: '';
   display: block;
   height: 8px;
@@ -49,10 +49,5 @@
 }
 
 .field-select:hover > fieldset {
-  border-color: var(--clr-black);
+  border-color: var(--colors-black);
 }
-/* @media (max-width: 640px) {
-  .form__field {
-    font-size: 0.9rem;
-  }
-} */
