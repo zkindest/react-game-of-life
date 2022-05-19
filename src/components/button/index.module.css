@@ -1,15 +1,21 @@
 .button {
-  font-size: 2rem;
   min-height: 50px;
-  padding: 0.3rem 0.5rem;
   background: none;
-  border: 0;
-  outline-color: var(--clr-pink);
+  outline: 0;
   cursor: pointer;
+  background-color: var(--colors-gray4);
+  border: 1px solid var(--colors-gray8);
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.8rem;
+  font-size: 2rem;
+  transition: transform 0.2s ease-in;
 }
 .button:hover {
-  color: var(--clr-pink);
+  border-color: var(--clr-black);
+}
+.button:focus {
+  box-shadow: var(--focus1);
 }
 .button:active {
-  transform: scale(0.8);
+  transform: scale(0.9);
 }

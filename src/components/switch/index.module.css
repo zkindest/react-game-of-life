@@ -40,10 +40,10 @@ fieldset legend {
 }
 .c-switch input:focus ~ .c-switch__toggler {
   top: -2px;
-  border: 3px solid var(--clr-dark-pink);
+  border: 3px solid var(--clr-lightskyblue-1);
 }
 .c-switch input:nth-of-type(2):checked ~ .c-switch__background {
-  background-color: var(--checkedBgColor);
+  background-color: var(--colors-sky6);
 }
 .c-switch input:nth-of-type(2):checked ~ .c-switch__toggler {
   right: 0;
@@ -70,7 +70,7 @@ fieldset legend {
   width: 50%;
   height: 100%;
   border-radius: 50%;
-  background-color: var(--clr-pink);
+  background-color: var(--clr-lightskyblue);
   z-index: 2;
   transition: all 0.1s ease-out;
   box-sizing: content-box;

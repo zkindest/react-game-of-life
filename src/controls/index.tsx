@@ -1,16 +1,17 @@
 import { ChangeEvent, Dispatch, useState } from 'react'
-import Button from './components/button'
+import Button from '../components/button'
 import {
   PauseSVG,
   PlaySVG,
   Random,
   Reset,
   StepForwardSVG,
-} from './components/icons'
-import { GameBoardAction } from './types'
-import Switch from './components/switch'
-import Select from './components/select'
-import { GPSOptions } from './config'
+} from '../components/icons'
+import { GameBoardAction } from '../types'
+import Switch from '../components/switch'
+import Select from '../components/select'
+import { GPSOptions } from '../config'
+import classes from './index.module.css'
 
 interface ControlProps {
   genCount: number
@@ -51,15 +52,19 @@ const Controls = ({
     dispatch({ type: 'toggle-play' })
   }
   return (
-    <div className="controls">
+    <div className={classes.controls}>
       <div title="generation cycle count">
         <span>Generations:</span>
-        <span className="generations" id="gen-count">
+        <span className={classes.generations} id="gen-count">
           {genCount}
         </span>
       </div>
       {isAuto ? (
-        <Button onClick={handlePlay} className="button" title="toggle play">
+        <Button
+          onClick={handlePlay}
+          className={classes.button}
+          title="toggle play"
+        >
           {isPlaying ? <PauseSVG /> : <PlaySVG />}
         </Button>
       ) : (
@@ -74,7 +79,7 @@ const Controls = ({
       )}
       <Button
         id="reset"
-        className="button"
+        className={classes.button}
         title="kill all cells and reset generations to zero"
         aria-label="kill all cells and reset generations to zero"
         onClick={handleReset}
@@ -83,7 +88,7 @@ const Controls = ({
       </Button>
       <Button
         id="random"
-        className="button"
+        className={classes.button}
         title="randomly generate cells"
         aria-label="randomly generate cells"
         onClick={handleRandomGeneration}

@@ -20,9 +20,8 @@
   min-height: calc(1em + 26px);
   min-width: 100px;
   padding-left: 0.5em;
-  border: 0;
+  border: 1px solid var(--colors-gray8);
   outline: 0;
-  box-shadow: var(--shadow-elevation-medium);
 }
 .field-select::after {
   border-bottom: 2px solid var(--clr-text);
@@ -42,15 +41,15 @@
   inset: 0;
   border-radius: 4px;
   pointer-events: none;
-  border: 2px solid;
+  border: 1px solid;
   border-color: transparent;
 }
 .field-select select:focus ~ fieldset {
-  border-color: var(--clr-pink);
+  box-shadow: var(--focus1);
 }
 
 .field-select:hover > fieldset {
-  border-color: var(--clr-pink);
+  border-color: var(--clr-black);
 }
 /* @media (max-width: 640px) {
   .form__field {

@@ -1,0 +1,34 @@
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-board__inner {
+  border: 1px solid var(--clr-lightblue);
+}
+.game-board__row {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell {
+  background-color: var(--clr-white);
+  border: 1px solid var(--clr-lightblue);
+  cursor: pointer;
+}
+.cell:hover {
+  background-color: var(--clr-gainsboro);
+}
+.cell:active {
+  background-color: var(--clr-lightskyblue);
+}
+.cell.alive {
+  background-color: var(--clr-lightskyblue);
+}
+.cell.alive:hover {
+  background-color: var(--clr-lightskyblue-1);
+}
+.cells-group {
+  display: flex;
+  flex-flow: row wrap;
+}

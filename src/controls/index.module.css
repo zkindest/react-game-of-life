@@ -1,0 +1,29 @@
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  user-select: none;
+  flex-flow: row wrap;
+  gap: 2rem;
+}
+
+.controls > * + * {
+  margin-left: 0.5rem;
+}
+
+.button {
+  min-width: 3.5rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.generations {
+  display: inline-block;
+  margin-left: 0.5em;
+  min-width: 5rem;
+  padding: 0.5rem 0.5rem;
+  background-color: var(--clr-pale-brown);
+  border-radius: 0.25rem;
+  text-align: center;
+}

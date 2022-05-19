@@ -1,20 +1,20 @@
 import { useState } from 'react'
-import './App.css'
+import './app.css'
 import Modal from './components/modal'
-import GameBoard from './GameBoard'
-import HelpContent from './HelpContent'
+import GameBoard from './game-board'
+import HelpContent from './help-content'
 
 function App() {
   const [showHelp, setShowHelp] = useState(false)
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
+      <header className="app__header">
         <h1>Game of Life</h1>
         <a
           href="javascript:void(0)"
           aria-label="game help"
           onClick={() => setShowHelp((curr) => !curr)}
-          className="help"
+          className="app__help"
         >
           what is this?
         </a>

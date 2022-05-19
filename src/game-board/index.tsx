@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react'
-import { initialGameSettings } from './config'
-import Controls from './Controls'
-import { GameBoardAction, GameBoardState } from './types'
+import { initialGameSettings } from '../config'
+import Controls from '../controls'
+import { GameBoardAction, GameBoardState } from '../types'
 import {
   areAllCellsDead,
   debounce,
   generateNewFrame,
   generateNewUniverse,
   getCellSize,
-} from './utils'
+} from '../utils'
+import classes from './index.module.css'
 
 const Cell = React.memo(
   ({
@@ -26,7 +27,7 @@ const Cell = React.memo(
       <button
         tabIndex={-1}
         onClick={() => handleClick(row, col)}
-        className={`cell ${isAlive ? 'cell-active' : ''}`}
+        className={`${classes.cell} ${isAlive ? classes.alive : ''}`}
         style={{ height: getCellSize(), width: getCellSize() }}
         type="button"
       ></button>
@@ -194,11 +195,11 @@ const GameBoard = () => {
   }, [])
 
   return (
-    <div className="board-container">
-      <div className="cells-container">
+    <div className={classes['game-board']}>
+      <div className={classes['game-board__inner']}>
         {cells.map((row, i) => {
           return (
-            <div className="cells-row" key={i}>
+            <div className={classes['game-board__row']} key={i}>
               {row.map((val, j) => {
                 return (
                   <Cell
