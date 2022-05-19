@@ -1,17 +1,23 @@
-import { ChangeEvent, Dispatch, useState } from "react";
-import Button from "./components/Button";
-import { PauseSVG, PlaySVG, Random, Reset, StepForwardSVG } from "./components/Icons";
-import { GameBoardAction } from "./types";
-import Switch from './components/Switch';
-import Select from "./components/Select";
+import { ChangeEvent, Dispatch, useState } from 'react'
+import Button from './components/Button'
+import {
+  PauseSVG,
+  PlaySVG,
+  Random,
+  Reset,
+  StepForwardSVG,
+} from './components/Icons'
+import { GameBoardAction } from './types'
+import Switch from './components/Switch'
+import Select from './components/Select'
 
-const gpsOptions = ['1', '5', '10', '15', '20'];
+const gpsOptions = ['1', '5', '10', '15', '20']
 
 interface ControlProps {
-  genCount: number;
-  generationsPerSecond: number;
-  isPlaying: boolean;
-  isAuto: boolean;
+  genCount: number
+  generationsPerSecond: number
+  isPlaying: boolean
+  isAuto: boolean
   dispatch: Dispatch<GameBoardAction>
 }
 const Controls = ({
@@ -19,54 +25,67 @@ const Controls = ({
   isPlaying,
   isAuto,
   generationsPerSecond,
-  dispatch
+  dispatch,
 }: ControlProps) => {
-
-  const [auto, setAuto] = useState(true);
+  const [auto, setAuto] = useState(true)
 
   const handleGPSChange = (e: ChangeEvent<HTMLSelectElement>) => {
     // handles regeneration interval change
     dispatch({ type: 'gps-change', payload: Number(e.target.value) })
-  };
+  }
 
   const handleAutoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = !auto;
-    setAuto(nextValue);
+    const nextValue = !auto
+    setAuto(nextValue)
     dispatch({ type: 'auto-option-change', payload: nextValue })
   }
   const handleStep = () => {
-    dispatch({ type: "step-next" });
+    dispatch({ type: 'step-next' })
   }
   const handleReset = () => {
-    dispatch({ type: 'reset' });
+    dispatch({ type: 'reset' })
   }
   const handleRandomGeneration = () => {
-    dispatch({ type: 'stop-and-set-random' });
+    dispatch({ type: 'stop-and-set-random' })
   }
   const handlePlay = () => {
-    dispatch({ type: "toggle-play" });
+    dispatch({ type: 'toggle-play' })
   }
   return (
     <div className="controls">
       <div title="generation cycle count">
         <span>Generations:</span>
-        <span className="generations" id="gen-count">{genCount}</span>
+        <span className="generations" id="gen-count">
+          {genCount}
+        </span>
       </div>
-      {
-        isAuto ? (
-          <Button onClick={handlePlay} className="button" title="toggle play">
-            {isPlaying ? <PauseSVG /> : <PlaySVG />}
-          </Button>
-        ) : (
-          <Button className="button" title="step forward once" onClick={handleStep} >
-            {<StepForwardSVG />}
-          </Button>
-        )
-      }
-      <Button id="reset" className="button" title="kill all cells and reset generations to zero" onClick={handleReset} >
+      {isAuto ? (
+        <Button onClick={handlePlay} className="button" title="toggle play">
+          {isPlaying ? <PauseSVG /> : <PlaySVG />}
+        </Button>
+      ) : (
+        <Button
+          className="button"
+          title="step forward once"
+          onClick={handleStep}
+        >
+          {<StepForwardSVG />}
+        </Button>
+      )}
+      <Button
+        id="reset"
+        className="button"
+        title="kill all cells and reset generations to zero"
+        onClick={handleReset}
+      >
         <Reset />
       </Button>
-      <Button id="random" className="button" title="randomly generate cells" onClick={handleRandomGeneration}>
+      <Button
+        id="random"
+        className="button"
+        title="randomly generate cells"
+        onClick={handleRandomGeneration}
+      >
         <Random />
       </Button>
       <Select
@@ -79,7 +98,7 @@ const Controls = ({
       <Switch
         name="auto or manual"
         title="auto generate cells at selected gps"
-        options={["auto", "manual"]}
+        options={['auto', 'manual']}
         onChange={handleAutoChange}
         currentOption={auto ? 'auto' : 'manual'}
       />
@@ -87,4 +106,4 @@ const Controls = ({
   )
 }
 
-export default Controls;
+export default Controls

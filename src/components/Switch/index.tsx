@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef, useEffect } from 'react';
-import { generateLabelId } from '../utils';
-import classes from './index.module.css';
+import { ComponentPropsWithoutRef, useEffect } from 'react'
+import { generateLabelId } from '../utils'
+import classes from './index.module.css'
 
 interface SwitchProps extends ComponentPropsWithoutRef<'input'> {
   name: string
@@ -8,15 +8,23 @@ interface SwitchProps extends ComponentPropsWithoutRef<'input'> {
   options: string[]
   currentOption: string
 }
-const Switch = ({ name, label, options, currentOption, ...other }: SwitchProps) => {
+const Switch = ({
+  name,
+  label,
+  options,
+  currentOption,
+  ...other
+}: SwitchProps) => {
   useEffect(() => {
     if (!options.includes(currentOption)) {
-      console.error(`current switch value: ${currentOption} not included in options`);
-      return;
+      console.error(
+        `current switch value: ${currentOption} not included in options`
+      )
+      return
     }
   }, [currentOption])
 
-  const nameId = generateLabelId(name);
+  const nameId = generateLabelId(name)
 
   return (
     <fieldset aria-label={name} role="radiogroup">
@@ -26,25 +34,31 @@ const Switch = ({ name, label, options, currentOption, ...other }: SwitchProps) 
         <span className={classes['c-switch__wrapper']}>
           <input
             type="radio"
-            name={name || "PleaseChooseName"}
+            name={name || 'PleaseChooseName'}
             id={`${nameId}__option1`}
             checked={currentOption === options[0]}
             {...other}
           />
           <input
             type="radio"
-            name={name || "PleaseChooseName"}
+            name={name || 'PleaseChooseName'}
             id={`${nameId}__option2`}
             checked={currentOption === options[1]}
             {...other}
           />
-          <span aria-hidden="true" className={classes["c-switch__background"]}></span>
-          <span aria-hidden="true" className={classes["c-switch__toggler"]}></span>
+          <span
+            aria-hidden="true"
+            className={classes['c-switch__background']}
+          ></span>
+          <span
+            aria-hidden="true"
+            className={classes['c-switch__toggler']}
+          ></span>
         </span>
         <label htmlFor={`${nameId}__option2`}>{options[1]}</label>
       </div>
     </fieldset>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

@@ -6,7 +6,7 @@
 }
 .form__field label {
   color: var(--clr-text);
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 .field-select {
   position: relative;
@@ -19,7 +19,7 @@
   background-color: var(--clr-elements);
   min-height: calc(1em + 26px);
   min-width: 100px;
-  padding-left: .5em;
+  padding-left: 0.5em;
   border: 0;
   outline: 0;
   box-shadow: var(--shadow-elevation-medium);
@@ -27,7 +27,7 @@
 .field-select::after {
   border-bottom: 2px solid var(--clr-text);
   border-right: 2px solid var(--clr-text);
-  content: "";
+  content: '';
   display: block;
   height: 8px;
   width: 8px;

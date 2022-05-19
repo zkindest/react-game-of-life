@@ -1,17 +1,22 @@
 // ref: https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/js/dialog.js
-import { HTMLAttributes, ReactNode, RefObject, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import defaultStyles from './index.module.css';
-import useModal from "../../hooks/useModal";
-
+import {
+  HTMLAttributes,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useState,
+} from 'react'
+import ReactDOM from 'react-dom'
+import defaultStyles from './index.module.css'
+import useModal from '../../hooks/useModal'
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
-  focusFirst?: string | RefObject<HTMLElement> | HTMLElement;
-  focusAfterClosed?: string | RefObject<HTMLElement> | HTMLElement;
-  autoFocus?: boolean;
-  onClose: () => void;
-  children: ReactNode;
-  maxWidth?: string;
+  focusFirst?: string | RefObject<HTMLElement> | HTMLElement
+  focusAfterClosed?: string | RefObject<HTMLElement> | HTMLElement
+  autoFocus?: boolean
+  onClose: () => void
+  children: ReactNode
+  maxWidth?: string
   classes?: {
     root?: string
     backDrop?: string
@@ -19,11 +24,17 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
     childrenContainer?: string
   }
 }
-const Modal = (
-  { focusFirst, focusAfterClosed, onClose, autoFocus, children, maxWidth, classes, ...rest }: ModalProps
-) => {
-
-  const [isMounted, setIsMounted] = useState(false);
+const Modal = ({
+  focusFirst,
+  focusAfterClosed,
+  onClose,
+  autoFocus,
+  children,
+  maxWidth,
+  classes,
+  ...rest
+}: ModalProps) => {
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -32,19 +43,36 @@ const Modal = (
     }
   }, [isMounted])
 
-  const { ref, modalRoot } = useModal<HTMLDivElement>({ autoFocus, focusFirst, focusAfterClosed, onClose, overlayModal: true });
+  const { ref, modalRoot } = useModal<HTMLDivElement>({
+    autoFocus,
+    focusFirst,
+    focusAfterClosed,
+    onClose,
+    overlayModal: true,
+  })
 
   const modal = (
-    <div role="presentation" className={`${defaultStyles.modal} ${classes ? classes?.root : ''}`}>
-      <div className={`${defaultStyles.backdrop} ${isMounted ? defaultStyles.mounted : ''} ${classes ? classes?.backDrop : ''}`}>
+    <div
+      role="presentation"
+      className={`${defaultStyles.modal} ${classes ? classes?.root : ''}`}
+    >
+      <div
+        className={`${defaultStyles.backdrop} ${
+          isMounted ? defaultStyles.mounted : ''
+        } ${classes ? classes?.backDrop : ''}`}
+      >
         <div tabIndex={0}></div>
         <div
           role="presentation"
           tabIndex={-1}
-          className={`${defaultStyles.children__outer} ${classes?.childrenOuter ? classes.childrenOuter : ''}`}
+          className={`${defaultStyles.children__outer} ${
+            classes?.childrenOuter ? classes.childrenOuter : ''
+          }`}
         >
           <div
-            className={`${defaultStyles.children__container} ${classes?.childrenContainer ? classes.childrenContainer : ''}`}
+            className={`${defaultStyles.children__container} ${
+              classes?.childrenContainer ? classes.childrenContainer : ''
+            }`}
             ref={ref}
             role="dialog"
             style={maxWidth ? { maxWidth } : {}}
@@ -56,9 +84,9 @@ const Modal = (
         <div tabIndex={0}></div>
       </div>
     </div>
-  );
+  )
 
-  return ReactDOM.createPortal(modal, modalRoot);
-};
+  return ReactDOM.createPortal(modal, modalRoot)
+}
 
-export default Modal;
+export default Modal
