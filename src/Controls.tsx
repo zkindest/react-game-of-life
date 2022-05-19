@@ -6,7 +6,7 @@ import {
   Random,
   Reset,
   StepForwardSVG,
-} from './components/Icons'
+} from './components/icons'
 import { GameBoardAction } from './types'
 import Switch from './components/switch'
 import Select from './components/select'
