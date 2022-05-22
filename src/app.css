@@ -147,3 +147,7 @@ textarea {
   padding: 2rem 0;
   text-align: center;
 }
+.close__modal-button {
+  width: 3rem;
+  align-self: flex-end;
+}

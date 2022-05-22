@@ -1,11 +1,11 @@
 import { ChangeEvent, Dispatch, useState } from 'react'
 import Button from '../components/button'
 import {
-  PauseSVG,
-  PlaySVG,
-  Random,
-  Reset,
-  StepForwardSVG,
+  PauseIcon,
+  PlayIcon,
+  RandomDiceIcon,
+  ResetIcon,
+  StepForwardIcon,
 } from '../components/icons'
 import { GameBoardAction } from '../types'
 import Switch from '../components/switch'
@@ -65,7 +65,7 @@ const Controls = ({
           className={classes.button}
           title="toggle play"
         >
-          {isPlaying ? <PauseSVG /> : <PlaySVG />}
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </Button>
       ) : (
         <Button
@@ -74,7 +74,7 @@ const Controls = ({
           onClick={handleStep}
           aria-label="step forward once"
         >
-          {<StepForwardSVG />}
+          {<StepForwardIcon />}
         </Button>
       )}
       <Button
@@ -84,7 +84,7 @@ const Controls = ({
         aria-label="kill all cells and reset generations to zero"
         onClick={handleReset}
       >
-        <Reset />
+        <ResetIcon />
       </Button>
       <Button
         id="random"
@@ -93,7 +93,7 @@ const Controls = ({
         aria-label="randomly generate cells"
         onClick={handleRandomGeneration}
       >
-        <Random />
+        <RandomDiceIcon />
       </Button>
       <Select
         label="gps"

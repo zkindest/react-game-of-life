@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-export function PlaySVG(props: SVGProps<SVGSVGElement>) {
+export function PlayIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -17,7 +17,7 @@ export function PlaySVG(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function PauseSVG(props: SVGProps<SVGSVGElement>) {
+export function PauseIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -34,7 +34,7 @@ export function PauseSVG(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function StepForwardSVG(props: SVGProps<SVGSVGElement>) {
+export function StepForwardIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -48,7 +48,7 @@ export function StepForwardSVG(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function Reset(props: SVGProps<SVGSVGElement>) {
+export function ResetIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -65,7 +65,7 @@ export function Reset(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function Random(props: SVGProps<SVGSVGElement>) {
+export function RandomDiceIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -83,7 +83,7 @@ export function Random(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function Help(props: SVGProps<SVGSVGElement>) {
+export function HelpIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -95,6 +95,19 @@ export function Help(props: SVGProps<SVGSVGElement>) {
       <path
         d="M4.834 4.834c-5.89 5.89-5.89 15.442 0 21.333s15.44 5.888 21.33-.002c5.89-5.89 5.893-15.44.002-21.33c-5.89-5.89-15.44-5.89-21.332 0zm20.625.708a14.164 14.164 0 0 1 2.103 2.726l-4.08 4.08A8.528 8.528 0 0 0 21.57 9.43a8.52 8.52 0 0 0-2.92-1.913l4.08-4.08a14.15 14.15 0 0 1 2.73 2.105zm-15.32 15.32a7.588 7.588 0 0 1-.002-10.725a7.592 7.592 0 0 1 10.725 0a7.595 7.595 0 0 1 0 10.724a7.59 7.59 0 0 1-10.724.002zM5.54 25.46a14.19 14.19 0 0 1-2.105-2.73l4.08-4.08a8.583 8.583 0 0 0 4.832 4.832l-4.082 4.08c-.97-.58-1.89-1.27-2.726-2.103zM8.268 3.434l4.082 4.082a8.558 8.558 0 0 0-4.832 4.831l-4.082-4.08c.58-.97 1.27-1.89 2.105-2.728a14.209 14.209 0 0 1 2.728-2.105zm14.464 24.128L18.65 23.48a8.549 8.549 0 0 0 4.832-4.83l4.082 4.08c-.58.97-1.27 1.892-2.105 2.73a14.197 14.197 0 0 1-2.728 2.103z"
         fill="currentColor"
+      ></path>
+    </svg>
+  )
+}
+
+export function CloseIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 15 15" {...props}>
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M12.854 2.854a.5.5 0 0 0-.708-.708L7.5 6.793L2.854 2.146a.5.5 0 1 0-.708.708L6.793 7.5l-4.647 4.646a.5.5 0 0 0 .708.708L7.5 8.207l4.646 4.647a.5.5 0 0 0 .708-.708L8.207 7.5l4.647-4.646Z"
+        clipRule="evenodd"
       ></path>
     </svg>
   )
