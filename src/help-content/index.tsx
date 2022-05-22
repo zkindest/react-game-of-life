@@ -57,12 +57,13 @@ const HelpContent = () => {
         target="_blank"
       >
         patterns
-      </a>
-      .
+      </a>{' '}
+      (you can <a href="#controls">interact</a> with cells ) .
       <br />
       <br />
       <h3 id="controls">Controls</h3>
-      <strong>Live cells (aka "Life"):</strong> cells with <i>blue-ish</i> color
+      <strong>ALive cells (aka "Life"):</strong> cells with <i>blue-ish</i>{' '}
+      color
       <br />
       <strong>Dead cells:</strong> cells with <i>no/white</i> color
       <br />
